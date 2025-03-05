@@ -2,22 +2,38 @@ package flight.reservation.payment;
 
 import java.util.Date;
 
-public class CreditCardPayment implements PaymentStrategy {
-    private CreditCard creditCard;
 
-    public CreditCardPayment(String number, Date expiryDate, String cvv) {
-        // Instantiate a CreditCard using the existing class
-        this.creditCard = new CreditCard(number, expiryDate, cvv);
+public class CreditCard {
+    private double amount;
+    private String number;
+    private Date date;
+    private String cvv;
+    private boolean valid;
+
+    public CreditCard(String number, Date date, String cvv) {
+        this.amount = 100000; // starting balance
+        this.number = number;
+        this.date = date;
+        this.cvv = cvv;
+        this.setValid();
     }
 
-    @Override
-    public void pay(double amount) {
-        // Check if the card is valid and has enough funds (dummy logic here)
-        if (creditCard.isValid() && creditCard.getAmount() >= amount) {
-            creditCard.setAmount(creditCard.getAmount() - amount);
-            System.out.println("Payment of $" + amount + " made using Credit Card. Remaining balance: $" + creditCard.getAmount());
-        } else {
-            System.out.println("Credit Card payment failed: Invalid card or insufficient funds.");
-        }
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid() {
+        // Dummy validation logic
+        this.valid = number.length() > 0
+                && date.getTime() > System.currentTimeMillis()
+                && !cvv.equals("000");
     }
 }
